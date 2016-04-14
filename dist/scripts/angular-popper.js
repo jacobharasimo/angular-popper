@@ -20,6 +20,7 @@
                     popper.attributes=[];
                 }
                 popper.attributes.push('id:popper_'+$scope.$id);
+                popper.attributes.push('aria-role:tooltip');
 
                 function open(e) {
                     e.stopPropagation();
@@ -30,7 +31,6 @@
                     $document.on('keydown', escapeKey);
                     if(!popup){
                         popup = new Popper(popperTrigger, popper, popperOptions);
-                        popup.onCreate(addAccessibility);
                     }else{
                         popup = new Popper(popperTrigger, popup._popper, popperOptions);
 
@@ -70,9 +70,6 @@
                     $element.on('click', open);
                 }
 
-                function addAccessibility(popper){
-                    popper._popper.setAttribute('aria-role','tooltip');
-                }
 
                 initialize();
             }])
