@@ -1,21 +1,10 @@
 'use strict';
 angular.module('myApp', ['angular-popper'])
     .controller('MyController', ['$scope',
-        function ($scope, popperService) {
+        function ($scope) {
             $scope.toggleButton = 'Open';
-            $scope.test = function (e) {
-                var ref = e.target;
-                popperService.open(ref);
-            };
 
-            var popperTrigger=document.getElementById('example10reference1');
-            var popper={content:'My Awesome Popper'};
-            var popperOptions={
-                placement:'top'
-            };
-
-            
-            $scope.options={
+            $scope.popperOptions={
                 placement:'left'
             };
             
@@ -23,8 +12,16 @@ angular.module('myApp', ['angular-popper'])
                 content:"triggered by click"
             };
             
+            $scope.onOpen=function(){
+                console.log('open callback');
+            };
+
+            $scope.onClose=function(){
+                console.log('close callback');
+            };
             
-            var a = new Popper(popperTrigger,popper,popperOptions);
+            
+            //var a = new Popper(popperTrigger,popper,popperOptions);
 
         }]
     );

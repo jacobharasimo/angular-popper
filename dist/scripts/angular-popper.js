@@ -16,25 +16,36 @@
                 var popperTrigger = $element[0];
                 var popper = this.popperTrigger;
                 var popperOptions = this.popperOptions;
+                var popperBeforeOpen = this.popperBeforeOpen;
+                var popperAfterClose = this.popperAfterClose;
+
+
                 if(!popper.attributes){
                     popper.attributes=[];
                 }
                 popper.attributes.push('id:popper_'+$scope.$id);
                 popper.attributes.push('aria-role:tooltip');
 
+
                 function open(e) {
                     e.stopPropagation();
-                    $log.debug('open');
                     $element.off('click', open);
                     $element.on('click', close);
                     $document.on('click', close);
                     $document.on('keydown', escapeKey);
+
+                    if(popperBeforeOpen && typeof popperBeforeOpen === 'function'){
+                        popperBeforeOpen(e);
+                    }
+
+                    $log.debug('open');
+
                     if(!popup){
                         popup = new Popper(popperTrigger, popper, popperOptions);
                     }else{
                         popup = new Popper(popperTrigger, popup._popper, popperOptions);
-
                     }
+                    popup._popper.setAttribute('aria-hidden','false');
                 }
 
                 function getPopupBubble(){
@@ -43,7 +54,7 @@
 
                 function close(e) {
                     e.stopPropagation();
-
+                    popup._popper.setAttribute('aria-hidden','true');
                     var toggleElement = getPopupBubble();
                     if (e && toggleElement && toggleElement.contains(e.target)) {
                         return;
@@ -53,6 +64,10 @@
                     $document.off('keydown', escapeKey);
                     $element.off('click', close);
                     $element.on('click', open);
+
+                    if(popperAfterClose && typeof popperAfterClose === 'function'){
+                        popperAfterClose(e);
+                    }
                     if (popup) {
                         popup.destroy()
                     }
@@ -79,7 +94,10 @@
                 replace: false,
                 bindToController: {
                     popperTrigger: '=',
-                    popperOptions: '='
+                    popperOptions: '=',
+                    popperBeforeOpen:'&',
+                    popperAfterClose:'&'
+
                 },
                 scope: true,
                 controller: 'popperCtrl',

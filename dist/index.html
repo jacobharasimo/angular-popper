@@ -59,7 +59,11 @@
                     <p class="thin">Trigger your popper!</p>
 
                     <button type="button" id="somePopperTest" ng-bind="toggleButton" style="margin-top:1em;"
-                            popper-options="options" popper-trigger="popperContent" ></button>
+                            popper-options="popperOptions" popper-trigger="popperContent"
+                            popper-before-open="onOpen()"
+                            popper-after-close="onClose()">
+
+                    </button>
 
                 </div>
 
