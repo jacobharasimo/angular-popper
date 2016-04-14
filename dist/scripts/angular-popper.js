@@ -28,9 +28,18 @@
                     popup = new Popper(popperTrigger, popper, popperOptions);
                 }
 
+                function getPopupBubble(){
+                    return popup._popper;
+                }
 
                 function close(e) {
                     e.stopPropagation();
+
+                    var toggleElement = getPopupBubble();
+                    if (e && toggleElement && toggleElement.contains(e.target)) {
+                        return;
+                    }
+
                     $log.debug('close');
                     $document.off('click', close);
                     $document.off('keydown', escapeKey);
@@ -39,6 +48,8 @@
                     if (popup) {
                         popup.destroy()
                     }
+
+
                 }
 
                 function escapeKey(e) {
@@ -48,7 +59,6 @@
                         });
                     }
                 }
-
 
                 function initalize() {
                     $element.on('click', open);
