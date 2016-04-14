@@ -1,0 +1,18 @@
+#example10positionSelector {
+    margin-top: 1em;
+}
+
+.example2__fake-body {
+    overflow-x: scroll;
+    height: 450px;
+    flex: 1;
+}
+.example2__scroll-box {
+    height: 200%;
+    display: flex;
+    align-content: center;
+    align-items: center;
+}
+#example3reference1:hover {
+    background: rgba(255,255,255,0.2);
+}

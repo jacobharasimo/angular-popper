@@ -1,0 +1,16 @@
+node_modules
+.tmp
+.sass-cache
+bower_components
+.idea/
+*.orig.*
+*.base.*
+*.remote.*
+*.local .*
+
+
+.tscache/**/*.*
+
+styles/base/icons.html
+styles/base/_icons.scss
+
