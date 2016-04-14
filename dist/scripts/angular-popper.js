@@ -11,21 +11,30 @@
 
     angular.module('angular-popper', [])
         .controller('popperCtrl',
-            ['$log', '$element', '$document', '$timeout', function ($log, $element, $document, $timeout) {
+            ['$scope','$log', '$element', '$document', '$timeout', function ($scope,$log, $element, $document, $timeout) {
                 var popup;
                 var popperTrigger = $element[0];
                 var popper = this.popperTrigger;
                 var popperOptions = this.popperOptions;
+                if(!popper.attributes){
+                    popper.attributes=[];
+                }
+                popper.attributes.push('id:popper_'+$scope.$id);
 
                 function open(e) {
                     e.stopPropagation();
                     $log.debug('open');
                     $element.off('click', open);
                     $element.on('click', close);
-
                     $document.on('click', close);
                     $document.on('keydown', escapeKey);
-                    popup = new Popper(popperTrigger, popper, popperOptions);
+                    if(!popup){
+                        popup = new Popper(popperTrigger, popper, popperOptions);
+                        popup.onCreate(addAccessibility);
+                    }else{
+                        popup = new Popper(popperTrigger, popup._popper, popperOptions);
+
+                    }
                 }
 
                 function getPopupBubble(){
@@ -39,7 +48,6 @@
                     if (e && toggleElement && toggleElement.contains(e.target)) {
                         return;
                     }
-
                     $log.debug('close');
                     $document.off('click', close);
                     $document.off('keydown', escapeKey);
@@ -48,8 +56,6 @@
                     if (popup) {
                         popup.destroy()
                     }
-
-
                 }
 
                 function escapeKey(e) {
@@ -60,11 +66,15 @@
                     }
                 }
 
-                function initalize() {
+                function initialize() {
                     $element.on('click', open);
                 }
 
-                initalize();
+                function addAccessibility(popper){
+                    popper._popper.setAttribute('aria-role','tooltip');
+                }
+
+                initialize();
             }])
         .directive('popperTrigger', [function () {
             return {
