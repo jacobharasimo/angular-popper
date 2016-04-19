@@ -10,18 +10,14 @@
      */
 
     angular.module('angular-popper', [])
-        .service('popperService', ['$log', '$document', '$timeout', function ($log, $document, $timeout) {
+        .service('popperService', ['$log', '$document', '$timeout',
+            function ($log, $document, $timeout) {
 
             function getPopupBubble() {
                 return popup._popper;
             }
 
-            function closeTrigger() {
-                $document.on('click', close);
-                $document.on('keydown', escapeKey);
-            }
-
-            function close(e) {
+            function close(e,popperAfterClose) {
                 e.stopPropagation();
                 popup._popper.setAttribute('aria-hidden', 'true');
                 var toggleElement = getPopupBubble();
@@ -35,6 +31,9 @@
                 if (popup) {
                     popup.destroy()
                 }
+                if (popperAfterClose && typeof popperAfterClose === 'function') {
+                    popperAfterClose(e);
+                }
             }
 
             function escapeKey(e) {
@@ -46,8 +45,18 @@
             }
 
             function create(trigger, popper, options) {
+                if(!angular.isArray(popper.attributes)){
+                    popper.setAttribute('aria-role','tooltip');
+                    popper.setAttribute('aria-hidden', 'false');
+                }else {
+                    popper.attributes.push('aria-role:tooltip');
+                    popper.attributes.push('aria-hidden:false');
+                }
+
+
                 popup = new Popper(trigger, popper, options);
-                popup.onCreate(closeTrigger);
+                $document.on('click', close);
+                $document.on('keydown', escapeKey);
                 return popup;
             }
 
@@ -57,89 +66,54 @@
                 create: create,
                 escapeKey: escapeKey,
                 close: close,
-                closeTrigger: closeTrigger,
                 getPopupBubble: getPopupBubble
             };
 
         }])
         .controller('popperCtrl',
-            ['$scope', '$log', '$element', '$document', '$timeout', function ($scope, $log, $element, $document, $timeout) {
-                var popup;
-                var popperTrigger = $element[0];
-                var popper = this.popperTrigger;
-                var popperOptions = this.popperOptions;
-                var popperBeforeOpen = this.popperBeforeOpen;
-                var popperAfterClose = this.popperAfterClose;
+            ['$scope', '$element', 'popperService',
+                function ($scope, $element, popperService) {
+                    var popup;
+                    var popperTrigger = $element[0];
+                    var popper = this.popperTrigger;
+                    var popperOptions = this.popperOptions;
+                    var popperBeforeOpen = this.popperBeforeOpen;
+                    var popperAfterClose = this.popperAfterClose;
 
+                    if (!popper.attributes) {
+                        popper.attributes = [];
+                    }
+                    popper.attributes.push('id:popper_' + $scope.$id);
 
-                if (!popper.attributes) {
-                    popper.attributes = [];
-                }
-                popper.attributes.push('id:popper_' + $scope.$id);
-                popper.attributes.push('aria-role:tooltip');
+                    function open(e) {
+                        e.stopPropagation();
+                        if (popperBeforeOpen && typeof popperBeforeOpen === 'function') {
+                            popperBeforeOpen(e);
+                        }
 
+                        if (!popup) {
+                            popup = popperService.create(popperTrigger, popper, popperOptions);
+                        } else {
+                            popup = popperService.create(popperTrigger, popup._popper, popperOptions);
+                        }
 
-                function open(e) {
-                    e.stopPropagation();
-                    $element.off('click', open);
-                    $element.on('click', close);
-                    $document.on('click', close);
-                    $document.on('keydown', escapeKey);
-
-                    if (popperBeforeOpen && typeof popperBeforeOpen === 'function') {
-                        popperBeforeOpen(e);
+                        $element.off('click', open);
+                        $element.on('click', close);
                     }
 
-                    $log.debug('open');
 
-                    if (!popup) {
-                        popup = new Popper(popperTrigger, popper, popperOptions);
-                    } else {
-                        popup = new Popper(popperTrigger, popup._popper, popperOptions);
+                    function close(e) {
+                        popperService.close(e,popperAfterClose);
+                        $element.on('click', open);
                     }
-                    popup._popper.setAttribute('aria-hidden', 'false');
-                }
 
-                function getPopupBubble() {
-                    return popup._popper;
-                }
-
-                function close(e) {
-                    e.stopPropagation();
-                    popup._popper.setAttribute('aria-hidden', 'true');
-                    var toggleElement = getPopupBubble();
-                    if (e && toggleElement && toggleElement.contains(e.target)) {
-                        return;
+                    function initialize() {
+                        $element.on('click', open);
                     }
-                    $log.debug('close');
-                    $document.off('click', close);
-                    $document.off('keydown', escapeKey);
-                    $element.off('click', close);
-                    $element.on('click', open);
-
-                    if (popperAfterClose && typeof popperAfterClose === 'function') {
-                        popperAfterClose(e);
-                    }
-                    if (popup) {
-                        popup.destroy()
-                    }
-                }
-
-                function escapeKey(e) {
-                    if (e.which === 27) {
-                        $timeout(function () {
-                            close(e)
-                        });
-                    }
-                }
-
-                function initialize() {
-                    $element.on('click', open);
-                }
 
 
-                initialize();
-            }])
+                    initialize();
+                }])
         .directive('popperTrigger', [function () {
             return {
                 restrict: 'A',
