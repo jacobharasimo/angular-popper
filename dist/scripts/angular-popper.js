@@ -10,8 +10,60 @@
      */
 
     angular.module('angular-popper', [])
+        .service('popperService', ['$log', '$document', '$timeout', function ($log, $document, $timeout) {
+
+            function getPopupBubble() {
+                return popup._popper;
+            }
+
+            function closeTrigger() {
+                $document.on('click', close);
+                $document.on('keydown', escapeKey);
+            }
+
+            function close(e) {
+                e.stopPropagation();
+                popup._popper.setAttribute('aria-hidden', 'true');
+                var toggleElement = getPopupBubble();
+                if (e && toggleElement && toggleElement.contains(e.target)) {
+                    return;
+                }
+                $log.debug('close');
+                $document.off('click', close);
+                $document.off('keydown', escapeKey);
+
+                if (popup) {
+                    popup.destroy()
+                }
+            }
+
+            function escapeKey(e) {
+                if (e.which === 27) {
+                    $timeout(function () {
+                        close(e)
+                    });
+                }
+            }
+
+            function create(trigger, popper, options) {
+                popup = new Popper(trigger, popper, options);
+                popup.onCreate(closeTrigger);
+                return popup;
+            }
+
+            var popup;
+
+            return {
+                create: create,
+                escapeKey: escapeKey,
+                close: close,
+                closeTrigger: closeTrigger,
+                getPopupBubble: getPopupBubble
+            };
+
+        }])
         .controller('popperCtrl',
-            ['$scope','$log', '$element', '$document', '$timeout', function ($scope,$log, $element, $document, $timeout) {
+            ['$scope', '$log', '$element', '$document', '$timeout', function ($scope, $log, $element, $document, $timeout) {
                 var popup;
                 var popperTrigger = $element[0];
                 var popper = this.popperTrigger;
@@ -20,10 +72,10 @@
                 var popperAfterClose = this.popperAfterClose;
 
 
-                if(!popper.attributes){
-                    popper.attributes=[];
+                if (!popper.attributes) {
+                    popper.attributes = [];
                 }
-                popper.attributes.push('id:popper_'+$scope.$id);
+                popper.attributes.push('id:popper_' + $scope.$id);
                 popper.attributes.push('aria-role:tooltip');
 
 
@@ -34,27 +86,27 @@
                     $document.on('click', close);
                     $document.on('keydown', escapeKey);
 
-                    if(popperBeforeOpen && typeof popperBeforeOpen === 'function'){
+                    if (popperBeforeOpen && typeof popperBeforeOpen === 'function') {
                         popperBeforeOpen(e);
                     }
 
                     $log.debug('open');
 
-                    if(!popup){
+                    if (!popup) {
                         popup = new Popper(popperTrigger, popper, popperOptions);
-                    }else{
+                    } else {
                         popup = new Popper(popperTrigger, popup._popper, popperOptions);
                     }
-                    popup._popper.setAttribute('aria-hidden','false');
+                    popup._popper.setAttribute('aria-hidden', 'false');
                 }
 
-                function getPopupBubble(){
+                function getPopupBubble() {
                     return popup._popper;
                 }
 
                 function close(e) {
                     e.stopPropagation();
-                    popup._popper.setAttribute('aria-hidden','true');
+                    popup._popper.setAttribute('aria-hidden', 'true');
                     var toggleElement = getPopupBubble();
                     if (e && toggleElement && toggleElement.contains(e.target)) {
                         return;
@@ -65,7 +117,7 @@
                     $element.off('click', close);
                     $element.on('click', open);
 
-                    if(popperAfterClose && typeof popperAfterClose === 'function'){
+                    if (popperAfterClose && typeof popperAfterClose === 'function') {
                         popperAfterClose(e);
                     }
                     if (popup) {
@@ -95,8 +147,8 @@
                 bindToController: {
                     popperTrigger: '=',
                     popperOptions: '=',
-                    popperBeforeOpen:'&',
-                    popperAfterClose:'&'
+                    popperBeforeOpen: '&',
+                    popperAfterClose: '&'
 
                 },
                 scope: true,

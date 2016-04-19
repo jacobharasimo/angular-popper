@@ -1,7 +1,22 @@
 'use strict';
 angular.module('myApp', ['angular-popper'])
-    .controller('MyController', ['$scope',
-        function ($scope) {
+    .controller('MyController', ['$scope','popperService',
+        function ($scope,popperService) {
+            //use as a service
+
+            var reference = document.getElementById('example10reference1');
+            var popper = document.getElementById('example10popper1');
+            var anotherPopper = popperService.create(
+                reference,
+                popper,
+                {
+                    // popper options here
+                }
+            );
+
+
+
+
             $scope.toggleButton = 'Open';
 
             $scope.popperOptions={

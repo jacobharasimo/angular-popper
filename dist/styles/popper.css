@@ -1,6 +1,3 @@
-
-
-
 p.thin {
     font-weight: 100;
     margin: 0;
@@ -25,6 +22,7 @@ p.bold {
 }
 
 .popper {
+    display:none;
     position: absolute;
     background: #FFC107;
     color: black;
@@ -40,6 +38,14 @@ p.bold {
     border-style: solid;
     position: absolute;
     margin: 5px;
+}
+
+.popper[x-placement^="top"],
+.popper[x-placement^="bottom"],
+.popper[x-placement^="right"],
+.popper[x-placement^="left"]
+{
+    display:block;
 }
 .popper[x-placement^="top"] {
     margin-bottom: 5px;
