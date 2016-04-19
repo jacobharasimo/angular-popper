@@ -17,6 +17,22 @@
                 return popup._popper;
             }
 
+            function areAnyOpen(){
+                //find all the poppers
+                var areAny = false;
+                var poppers = angular.element(document.querySelectorAll('.popper'));
+                angular.forEach(poppers,function(item){
+                    if(item.attributes['x-placement']){
+                        return areAny = true;
+                    }
+                });
+                return areAny;
+            }
+
+            function closeAll(){
+
+            }
+
             function close(e,popperAfterClose) {
                 e.stopPropagation();
                 popup._popper.setAttribute('aria-hidden', 'true');
@@ -45,6 +61,10 @@
             }
 
             function create(trigger, popper, options) {
+                if(areAnyOpen()){
+
+                }
+
                 if(!angular.isArray(popper.attributes)){
                     popper.setAttribute('aria-role','tooltip');
                     popper.setAttribute('aria-hidden', 'false');
@@ -79,11 +99,6 @@
                     var popperOptions = this.popperOptions;
                     var popperBeforeOpen = this.popperBeforeOpen;
                     var popperAfterClose = this.popperAfterClose;
-
-                    if (!popper.attributes) {
-                        popper.attributes = [];
-                    }
-                    popper.attributes.push('id:popper_' + $scope.$id);
 
                     function open(e) {
                         e.stopPropagation();
