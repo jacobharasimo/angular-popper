@@ -20,7 +20,7 @@ angular.module('myApp', ['angular-popper'])
             $scope.toggleButton = 'Open';
 
             $scope.popperOptions={
-                placement:'left'
+                placement:'bottom'
             };
             
             $scope.popperContent={
