@@ -15,7 +15,29 @@ angular.module('myApp', ['angular-popper'])
             );
 
 
+            $scope.popup1 = function(e){
+                var popper = {content:'popper 1'};
+                popperService.create(
+                    e.target,
+                    popper,
+                    {
+                        // popper options here
+                    }
+                );
+                e.stopPropagation();
+            };
 
+            $scope.popup2 = function(e){
+                var popper = {content:'popper 2'};
+                popperService.create(
+                    e.target,
+                    popper,
+                    {
+                        // popper options here
+                    }
+                );
+                e.stopPropagation();
+            };
 
             $scope.toggleButton = 'Open';
 

@@ -19,13 +19,10 @@
                 }
 
                 function closeAllOpen() {
-                    var poppers = angular.element(document.querySelectorAll('.popper'));
-                    angular.forEach(poppers, function (item) {
-                        if (item.attributes['x-placement']) {
-                            item.setAttribute('aria-hidden', 'true');
-                            new Popper(item.previousElementSibling, item).destroy();
-                        }
-                    });
+                    if(popup){
+                        popup.destroy();
+                    }
+
                 }
 
                 function close(e, popperAfterClose) {
@@ -62,6 +59,14 @@
                     popup._popper.setAttribute('aria-hidden', 'false');
                     $document.on('click', close);
                     $document.on('keydown', escapeKey);
+
+
+                    popup.onUpdate(function () {
+                        console.log('a');
+                    });
+                    popup.onCreate(function () {
+                        console.log('a');
+                    });
                     return popup;
                 }
 
@@ -93,8 +98,8 @@
                         } else {
                             popup = popperService.create(popperTrigger, popup._popper, popperOptions);
                         }
-                        $element.off('click', open);
-                        $element.on('click', close);
+                        /*$element.off('click', open);
+                         $element.on('click', close);*/
                         e.stopPropagation();
                     }
 
