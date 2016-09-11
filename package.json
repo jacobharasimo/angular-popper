@@ -7,50 +7,58 @@
     "test": "test"
   },
   "scripts": {
-    "test": "grunt travis"
+    "test": "",
+    "preinstall": "npm i -g coffee-script",
+    "postinstall": "",
+    "install": ""
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git@github.com:jacobharasimo/angular-popper.git"
   },
   "keywords": [
     "Angular",
-    "Angulr.js",
-    "angular-popper"
+    "Angular.js",
+    "angularjs",
+    "angular-popper",
+    "popper",
+    "popperjs"
   ],
+  "engines": {
+    "node": ">=6.0.0",
+    "npm": ">=3.4.0"
+  },
   "author": "Jacob Harasimo",
   "license": "MIT",
   "bugs": {
     "url": "/issues"
   },
   "homepage": "",
-  "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-contrib-clean": "^0.7.0",
-    "grunt-contrib-concat": "^0.5.0",
-    "grunt-contrib-uglify": "^0.9.0",
-    "karma": "^0.13.14",
-    "karma-chrome-launcher": "0.2.1",
-    "karma-coverage": "^0.5.3",
-    "karma-mocha": "^0.2.0",
-    "karma-mocha-reporter": "^1.1.1",
-    "karma-ng-scenario": "^0.1.0",
-    "karma-sinon-chai": "^1.1.0",
-    "load-grunt-tasks": "~3.3.0",
-    "mocha": "^2.3.3",
-    "chai": "~3.2.0",
-    "lolex": "~1.4.0",
-    "sinon": ">=1.17.0",
-    "phantomjs": "^1.9",
-    "karma-chai": "^0.1.0",
-    "karma-chai-plugins": "~0.6.0",
-    "karma-phantomjs-launcher": "^0.2.1",
-    "karma-phantomjs2-launcher": "^0.4.0",
-    "karma-sourcemap-loader": "^0.3.7"
-  },
+  "devDependencies": {},
   "dependencies": {
-    "angular": "~1.4.0",
-    "angular-aria": "~1.4.0",
-    "popper.js": "^0.3.3"
+    "angular": "^1.5.8",
+    "angular-aria": "^1.5.8",
+    "chai": "^3.5.0",
+    "grunt": "^1.0.1",
+    "grunt-contrib-clean": "^1.0.0",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-uglify": "^2.0.0",
+    "karma": "^1.3.0",
+    "karma-chai": "^0.1.0",
+    "karma-chai-plugins": "^0.7.0",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-coverage": "^1.1.1",
+    "karma-mocha": "^1.1.1",
+    "karma-mocha-reporter": "^2.1.0",
+    "karma-ng-scenario": "^1.0.0",
+    "karma-phantomjs-launcher": "^1.0.2",
+    "karma-sinon-chai": "^1.2.3",
+    "karma-sourcemap-loader": "^0.3.7",
+    "load-grunt-tasks": "^3.5.2",
+    "lolex": "^1.5.1",
+    "mocha": "^3.0.2",
+    "phantomjs-prebuilt": "^2.1.12",
+    "popper.js": "^0.6.4",
+    "sinon": "^1.17.5"
   }
 }
