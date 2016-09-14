@@ -9,7 +9,7 @@
   "scripts": {
     "test": "",
     "preinstall": "npm i -g coffee-script",
-    "postinstall": "",
+    "postinstall": "grunt dist",
     "install": ""
   },
   "repository": {
@@ -34,7 +34,11 @@
     "url": "/issues"
   },
   "homepage": "",
-  "devDependencies": {},
+  "devDependencies": {
+    "grunt-contrib-connect": "^1.0.2",
+    "grunt-karma": "^2.0.0",
+    "time-grunt": "^1.4.0"
+  },
   "dependencies": {
     "angular": "^1.5.8",
     "angular-aria": "^1.5.8",

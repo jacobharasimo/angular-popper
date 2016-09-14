@@ -1,55 +1,79 @@
 module.exports = function (grunt) {
+    // Time how long tasks take. Can help when optimizing build times
+    require('time-grunt')(grunt);
     // Do grunt-related things in here
     grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-connect');
 
     grunt.initConfig({
         pkg: grunt.file.readJSON("package.json"),
-        karma: {
-            unit: {
-                configFile: 'build/config/karma.conf.js',
-                singleRun: true
-            },
-            punit: {
-                configFile: 'build/config/karma.conf.js',
-                singleRun: false
-            },
-            phantom: {
-                configFile: 'build/config/karma-phantom.conf.js',
-                singleRun: true
-            }
-        },
-        clean: ["dist","angular-popper.js"],
+        clean: [
+            "dist",
+            "angular-popper.js"
+        ],
         uglify: {
             options: {
-                preserveComments: 'no'                
+                preserveComments: 'no'
             },
             dist: {
-                files: {                    
-                    'dist/angular-popper.min.js': ['angular-popper.js']
+                files: {
+                    'dist/angular-popper.min.js': ['dist/angular-popper.js']
                 }
             }
         },
         concat: {
             options: {
-              separator: ';'
+                separator: ';'
             },
             dist: {
-              src: ['src/*.js'],
-              dest: 'angular-popper.js'
+                src: ['src/*.js'],
+                dest: 'dist/angular-popper.js'
             }
-          }
+        },
+        // The actual grunt server settings
+        connect: {
+            options: {
+                port: 9000,
+                // Change this to '0.0.0.0' to access the server from outside.
+                hostname: 'localhost',
+                livereload: 35729
+            },
+            livereload: {
+                options: {
+                    open: true,
+                    keepalive: true,
+                    base: 'example/'
+                }
+            }
+        }
     });
 
-    
-    grunt.registerTask('test', ['karma:unit']);
-    grunt.registerTask('travis', ['karma:phantom']);
-    grunt.registerTask('default', ['dist', 'test']);
-    grunt.registerTask('dist', [
-        'clean',
-        'concat',
-        'uglify:dist'
-        ]);
+
+    grunt.registerTask('serve',
+        [
+            'dist',
+            'connect'
+        ]
+    );
+    grunt.registerTask('test',
+        [
+            'karma:unit'
+        ]
+    );
+    grunt.registerTask('default',
+        [
+            'dist',
+            'test'
+        ]
+    );
+    grunt.registerTask('dist',
+        [
+            'clean',
+            'concat',
+            'uglify:dist'
+        ]
+    );
 };

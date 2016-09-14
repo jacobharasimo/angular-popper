@@ -1,5 +1,5 @@
 <!doctype html>
-<html ng-app="myApp">
+<html ng-app="popperExample">
 <head>
     <meta charset="UTF-8"/>
     <title>Angular-popper.js</title>
@@ -10,13 +10,12 @@
     <link rel="stylesheet" href="styles/code.css">
     <link rel="stylesheet" href="styles/popper.css">
     <link rel="stylesheet" href="styles/style.css">
-    <script src="../node_modules/angular/angular.min.js"></script>
     <!-- endbuild -->
 
 </head>
 <body>
 
-<div ng-controller="MyController">
+<div ng-controller="angularPopperExample">
 
     <section id="two" class="wrapper alt style2">
         <section class="spotlight">
@@ -220,10 +219,13 @@
 
 </div>
 
-
+<script src="../node_modules/angular/angular.min.js"></script>
 <script src="../node_modules/popper.js/build/popper.min.js"></script>
-<script src="scripts/angular-popper.js"></script>
+
+<script src="../dist/angular-popper.min.js"></script>
+
 <script src="scripts/app.js"></script>
+<script src="scripts/controller/angularPopperExampleCtrl.js"></script>
 
 </body>
 </html>
