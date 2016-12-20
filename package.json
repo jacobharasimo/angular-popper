@@ -2,7 +2,7 @@
   "name": "angular-popper",
   "version": "0.0.0",
   "description": "Popper.js angular wrapper",
-  "main": "Gruntfile.js",
+    "main": "dist/angular-popper.js",
   "directories": {
     "test": "test"
   },
@@ -10,7 +10,8 @@
     "test": "",
     "preinstall": "npm i -g coffee-script",
     "postinstall": "grunt dist",
-    "install": ""
+      "install": "",
+      "start": "grunt serve"
   },
   "repository": {
     "type": "git",
@@ -37,11 +38,13 @@
   "devDependencies": {
     "grunt-contrib-connect": "^1.0.2",
     "grunt-karma": "^2.0.0",
+      "serve-static": "^1.11.1",
     "time-grunt": "^1.4.0"
   },
   "dependencies": {
     "angular": "^1.5.8",
     "angular-aria": "^1.5.8",
+      "angular-route": "^1.6.0",
     "chai": "^3.5.0",
     "grunt": "^1.0.1",
     "grunt-contrib-clean": "^1.0.0",

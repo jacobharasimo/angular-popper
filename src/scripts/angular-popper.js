@@ -1,3 +1,4 @@
+var Popper = require('popper.js');
 (function () {
     'use strict';
     /**
@@ -10,25 +11,32 @@
      */
 
     angular.module('angular-popper', [])
-        .service('popperService', ['$log', '$document', '$timeout',
+        .service('popper', ['$log', '$document', '$timeout',
             function ($log, $document, $timeout) {
                 var popup;
+                var ESCAPE_KEY = 27;
 
                 function getPopupBubble() {
                     return popup._popper;
                 }
 
+                function getPopup() {
+                    return popup;
+                }
+
                 function closeAllOpen() {
-                    if(popup){
+                    if (popup) {
                         popup.destroy();
                     }
 
                 }
 
-                function close(e, popperAfterClose) {
+                function close(e) {
+                    var popperAfterClose = service.afterClose;
                     popup._popper.setAttribute('aria-hidden', 'true');
                     var toggleElement = getPopupBubble();
-                    if (e && toggleElement && toggleElement.contains(e.target)) {
+                    if (e && toggleElement && $(toggleElement).find(e.target.tagName.toLowerCase()).length &&
+                        e.which !== ESCAPE_KEY) {
                         return;
                     }
                     $log.debug('close');
@@ -36,18 +44,20 @@
                     $document.off('keydown', escapeKey);
 
                     if (popup) {
-                        popup.destroy()
+                        popup.destroy();
                     }
                     if (popperAfterClose && typeof popperAfterClose === 'function') {
                         popperAfterClose(e);
                     }
-                    e.stopPropagation();
+                    if (e) {
+                        e.stopPropagation();
+                    }
                 }
 
                 function escapeKey(e) {
-                    if (e.which === 27) {
+                    if (e.which === ESCAPE_KEY) {
                         $timeout(function () {
-                            close(e)
+                            close(e);
                         });
                     }
                 }
@@ -57,26 +67,31 @@
                     popup = new Popper(trigger, popper, options);
                     popup._popper.setAttribute('aria-role', 'tooltip');
                     popup._popper.setAttribute('aria-hidden', 'false');
-                    $document.on('click', close);
+                    popup.update();
+                    if (!options.doNotCloseOnClick) {
+                        $document.on('click', close);
+                    }
                     $document.on('keydown', escapeKey);
 
 
                     popup.onUpdate(function () {
-                        console.log('a');
+                        // console.log('update');
                     });
                     popup.onCreate(function () {
-                        console.log('a');
+                        // console.log('create');
                     });
                     return popup;
                 }
 
-                return {
+                var service = {
                     create: create,
                     escapeKey: escapeKey,
                     close: close,
-                    getPopupBubble: getPopupBubble
+                    getPopupBubble: getPopupBubble,
+                    getPopup: getPopup
                 };
 
+                return service;
             }])
         .controller('popperCtrl',
             ['$scope', '$element', 'popperService',
@@ -86,33 +101,37 @@
                     var popper = this.popperTrigger;
                     var popperOptions = this.popperOptions;
                     var popperBeforeOpen = this.popperBeforeOpen;
-                    var popperAfterClose = this.popperAfterClose;
-
+                    var popperAfterCreate = this.popperAfterCreate;
+                    popperService.afterClose = this.popperAfterClose;
+                    if (this.popperOptions.outside) {
+                        angular.element(popper).detach().appendTo('body');
+                    }
                     function open(e) {
                         if (popperBeforeOpen && typeof popperBeforeOpen === 'function') {
                             popperBeforeOpen(e);
                         }
                         if (!popup) {
-
                             popup = popperService.create(popperTrigger, popper, popperOptions);
                         } else {
                             popup = popperService.create(popperTrigger, popup._popper, popperOptions);
                         }
-                        /*$element.off('click', open);
-                         $element.on('click', close);*/
+
+                        if (popperAfterCreate && typeof popperAfterCreate === 'function') {
+                            popperAfterCreate(e);
+                        }
+
                         e.stopPropagation();
                     }
 
 
                     function close(e) {
-                        popperService.close(e, popperAfterClose);
+                        popperService.close(e);
                         $element.on('click', open);
                     }
 
                     function initialize() {
                         $element.on('click', open);
                     }
-
 
                     initialize();
                 }])
@@ -124,8 +143,8 @@
                     popperTrigger: '=',
                     popperOptions: '=',
                     popperBeforeOpen: '&',
-                    popperAfterClose: '&'
-
+                    popperAfterClose: '&',
+                    popperAfterCreate: '&'
                 },
                 scope: true,
                 controller: 'popperCtrl',

@@ -1,5 +1,5 @@
 <!doctype html>
-<html ng-app="popperExample">
+<html>
 <head>
     <meta charset="UTF-8"/>
     <title>Angular-popper.js</title>
@@ -12,220 +12,19 @@
     <link rel="stylesheet" href="styles/style.css">
     <!-- endbuild -->
 
+
 </head>
-<body>
-
-<div ng-controller="angularPopperExample">
-
-    <section id="two" class="wrapper alt style2">
-        <section class="spotlight">
-            <div class="example">
-                <div class="rel" id="example10reference1">
-                    <p class="bold">Hey!</p>
-                    <p class="thin">Choose where to put your popper!</p>
-
-                    <select id="example10positionSelector">
-                        <option value="top">Top</option>
-                        <option value="right">Right</option>
-                        <option value="bottom">Bottom</option>
-                        <option value="left">Left</option>
-                    </select>
+<body ng-app="popperExample">
+<div ng-view=""></div>
+<script src="/node_modules/popper.js/build/popper.min.js"></script>
 
 
-                </div>
-                <div class="popper" id="example10popper1">
-                    <p class="bold">Popper on <b id="example10currentPosition" class="currentPosition">bottom</b></p>
-                    <div class="popper__arrow"></div>
-                </div>
-            </div>
-            <div class="content">
-                <h2 id="example10" tabindex="0">Popper on your side!</h2>
-                <p id="example10Title">Placing poppers around elements is just that easy!</p>
+<script src="/node_modules/angular/angular.min.js"></script>
+<script src="/node_modules/angular-route/angular-route.min.js"></script>
 
-                <div id="example10code" class="">
-                    <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript">    <span
-                            class="kd">var</span> <span class="nx">popper</span> <span class="o">=</span> <span
-                            class="k">new</span> <span class="nx">Popper</span><span class="p">(</span><span class="nx">referenceElement</span><span
-                            class="p">,</span> <span class="nx">onPopper</span><span class="p">,</span> <span class="p">{</span>
-        <span class="na">placement</span><span class="p">:</span> <span class="s1">'bottom'</span>
-    <span class="p">});</span>
-    </code></pre>
-                    </figure>
-                </div>
-
-            </div>
-        </section>
-            <section class="spotlight">
-            <div class="example">
-                <div class="rel" id="example11reference1">
-                    <p class="bold">Hey!</p>
-                    <p class="thin">Trigger your popper!</p>
-
-                    <button type="button" style="margin-top:1em;"
-                            popper-options="popperOptions" popper-trigger="popperContent"
-                            popper-before-open="onOpen()"
-                            popper-after-close="onClose()">
-                        Open 1
-                    </button>
-
-                    <button type="button" style="margin-top:1em;"
-                            popper-options="popperOptions" popper-trigger="popperContent"
-                            popper-before-open="onOpen()"
-                            popper-after-close="onClose()">
-                        Open 2
-                    </button>
-
-                </div>
-
-            </div>
-            <div class="content">
-                <h2 id="example11" tabindex="0">Popper on your side!</h2>
-                <p id="example11Title">Placing poppers around elements is just that easy!</p>
-
-                <div id="example11code" class="">
-                    <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript">    <span
-                            class="kd">var</span> <span class="nx">popper</span> <span class="o">=</span> <span
-                            class="k">new</span> <span class="nx">Popper</span><span class="p">(</span><span class="nx">referenceElement</span><span
-                            class="p">,</span> <span class="nx">onPopper</span><span class="p">,</span> <span class="p">{</span>
-        <span class="na">placement</span><span class="p">:</span> <span class="s1">'bottom'</span>
-    <span class="p">});</span>
-    </code></pre>
-                    </figure>
-                </div>
-
-            </div>
-        </section>
-        <section class="spotlight">
-            <div class="example">
-                <div class="example2__fake-body">
-                    <div class="example2__scroll-box">
-                        <div class="rel" id="example2reference1">
-                            <p class="bold">Scroll me</p>
-                            <p class="thin">up and down</p>
-                        </div>
-
-
-                    </div>
-                </div>
-
-            </div>
-            <div class="content">
-                <h2 id="example2" tabindex="0">Popper on scrolling container</h2>
-                <p>
-                    In this example we have a relative div which contains a div with <code>overflow: scroll</code>.
-                    <br> Inside it, there are our popper and reference elements.
-                </p>
-                <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span
-                        class="kd">var</span> <span class="nx">popper</span> <span class="o">=</span> <span class="k">new</span> <span
-                        class="nx">Popper</span><span class="p">(</span><span class="nx">referenceElement</span><span
-                        class="p">,</span> <span class="nx">onLeftPopper</span><span class="p">,</span> <span class="p">{</span>
-    <span class="na">placement</span><span class="p">:</span> <span class="s1">'left'</span><span class="p">,</span>
-    <span class="na">boundariesElement</span><span class="p">:</span> <span class="nx">container</span>
-<span class="p">});</span></code></pre>
-                </figure>
-
-            </div>
-        </section>
-        <section class="spotlight">
-            <div class="example">
-                <div class="rel" id="example3reference1">
-                    <p class="bold">Drag me</p>
-                    <p class="thin">on the edges</p>
-                </div>
-
-            </div>
-            <div class="content">
-                <h2 id="example3" tabindex="0">Custom flip behavior</h2>
-                <p>
-                    Try dragging the reference element on the left side, its popper will move on its bottom edge. Then,
-                    try to move the reference element on the bottom left corner, it will move on its top edge.
-                </p>
-                <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span
-                        class="kd">var</span> <span class="nx">popper</span> <span class="o">=</span> <span class="k">new</span> <span
-                        class="nx">Popper</span><span class="p">(</span><span class="nx">referenceElement</span><span
-                        class="p">,</span> <span class="nx">onLeftPopper</span><span class="p">,</span> <span class="p">{</span>
-    <span class="na">placement</span><span class="p">:</span> <span class="s1">'left'</span><span class="p">,</span>
-    <span class="na">flipBehavior</span><span class="p">:</span> <span class="p">[</span><span
-                            class="s1">'left'</span><span class="p">,</span> <span class="s1">'bottom'</span><span
-                            class="p">,</span> <span class="s1">'top'</span><span class="p">],</span>
-    <span class="na">boundariesElement</span><span class="p">:</span> <span class="nx">container</span>
-<span class="p">});</span></code></pre>
-                </figure>
-
-            </div>
-        </section>
-        <section class="spotlight">
-            <div class="example">
-                <div class="rel" id="example4reference1">
-                    <p class="bold">Reference</p>
-                </div>
-
-            </div>
-            <div class="content">
-                <h2 id="example5" tabindex="0">Shifted poppers</h2>
-                <p>
-                    Shift your poppers on start or end of its reference element side.
-                </p>
-
-                <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span
-                        class="kd">var</span> <span class="nx">shiftStart</span> <span class="o">=</span> <span
-                        class="k">new</span> <span class="nx">Popper</span><span class="p">(</span><span class="nx">referenceElement</span><span
-                        class="p">,</span> <span class="nx">shiftStartPopper</span><span class="p">,</span> <span
-                        class="p">{</span>
-    <span class="na">placement</span><span class="p">:</span> <span class="s1">'left-start'</span><span
-                            class="p">,</span>
-    <span class="na">boundariesElement</span><span class="p">:</span> <span class="nx">container</span>
-<span class="p">});</span>
-
-<span class="kd">var</span> <span class="nx">shiftEnd</span> <span class="o">=</span> <span class="k">new</span> <span
-                            class="nx">Popper</span><span class="p">(</span><span
-                            class="nx">referenceElement</span><span class="p">,</span> <span
-                            class="nx">shiftEndPopper</span><span class="p">,</span> <span class="p">{</span>
-    <span class="na">placement</span><span class="p">:</span> <span class="s1">'bottom-end'</span><span
-                            class="p">,</span>
-    <span class="na">boundariesElement</span><span class="p">:</span> <span class="nx">container</span>
-<span class="p">});</span></code></pre>
-                </figure>
-
-            </div>
-        </section>
-        <section class="spotlight">
-            <div class="example">
-                <div class="rel" id="example5reference1">
-                    <p class="bold">Pop</p>
-                    <p class="thin">on the bottom</p>
-                </div>
-
-            </div>
-            <div class="content">
-                <h2 id="example4" tabindex="0">Viewport boundaries</h2>
-                <p>
-                    By default, poppers use as boundaries the page viewport.
-                    <br> Scroll the page to see the popper flip when hits the page viewport margins.
-                </p>
-
-                <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span
-                        class="kd">var</span> <span class="nx">popper</span> <span class="o">=</span> <span class="k">new</span> <span
-                        class="nx">Popper</span><span class="p">(</span><span class="nx">referenceElement</span><span
-                        class="p">,</span> <span class="nx">onBottomPopper</span><span class="p">,</span> <span
-                        class="p">{</span>
-    <span class="na">placement</span><span class="p">:</span> <span class="s1">'bottom'</span>
-<span class="p">});</span></code></pre>
-                </figure>
-
-            </div>
-        </section>
-    </section>
-
-</div>
-
-<script src="../node_modules/angular/angular.min.js"></script>
-<script src="../node_modules/popper.js/build/popper.min.js"></script>
-
-<script src="../dist/angular-popper.min.js"></script>
-
-<script src="scripts/app.js"></script>
-<script src="scripts/controller/angularPopperExampleCtrl.js"></script>
+<script src="/dist/angular-popper.min.js"></script>
+<script src="./scripts/app.js"></script>
+<script src="./scripts/controller/angularPopperExampleCtrl.js"></script>
 
 </body>
 </html>
