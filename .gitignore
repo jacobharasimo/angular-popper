@@ -8,4 +8,4 @@ bower_components
 *.base.*
 *.remote.*
 *.local .*
-
+*.log
