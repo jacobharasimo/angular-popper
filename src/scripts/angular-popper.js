@@ -1,4 +1,4 @@
-var Popper = require('popper.js');
+//var Popper = require('popper.js');
 (function () {
     'use strict';
     /**
@@ -11,7 +11,7 @@ var Popper = require('popper.js');
      */
 
     angular.module('angular-popper', [])
-        .service('popper', ['$log', '$document', '$timeout',
+        .service('popperService', ['$log', '$document', '$timeout',
             function ($log, $document, $timeout) {
                 var popup;
                 var ESCAPE_KEY = 27;
@@ -35,7 +35,8 @@ var Popper = require('popper.js');
                     var popperAfterClose = service.afterClose;
                     popup._popper.setAttribute('aria-hidden', 'true');
                     var toggleElement = getPopupBubble();
-                    if (e && toggleElement && $(toggleElement).find(e.target.tagName.toLowerCase()).length &&
+                    //close the popup if you click escape or click on anything except the popup
+                    if (e && toggleElement && (toggleElement === e.target) &&
                         e.which !== ESCAPE_KEY) {
                         return;
                     }

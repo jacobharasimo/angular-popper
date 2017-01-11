@@ -30,7 +30,7 @@ module.exports = function (grunt) {
                 separator: ';'
             },
             dist: {
-                src: ['src/*.js'],
+                src: ['src/**/*.js'],
                 dest: 'dist/angular-popper.js'
             }
         },

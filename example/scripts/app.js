@@ -2,7 +2,8 @@
 angular
     .module('popperExample',
         [
-            'ngRoute'
+            'ngRoute',
+            'angular-popper'
         ]
     )
     .config(['$routeProvider', '$httpProvider', function ($routeProvider) {
